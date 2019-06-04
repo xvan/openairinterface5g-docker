@@ -1,0 +1,13 @@
+diff --git a/cmake_targets/tools/build_helper b/cmake_targets/tools/build_helper
+index acfb75b..ba016d0 100755
+--- a/cmake_targets/tools/build_helper
++++ b/cmake_targets/tools/build_helper
+@@ -211,7 +211,7 @@ install_protobuf_from_source(){
+     #cd protobuf-2.6.1/
+     rm -rf /tmp/protobuf-cpp-3.3.0.tar.gz* /tmp/protobuf-3.3.0
+     wget https://github.com/google/protobuf/releases/download/v3.3.0/protobuf-cpp-3.3.0.tar.gz
+-    tar -xzvf protobuf-cpp-3.3.0.tar.gz --owner $USER --group $(groups | cut -d" " -f1) --no-same-owner
++    tar -xzvf protobuf-cpp-3.3.0.tar.gz --owner=$USER --group=$(groups | cut -d" " -f1) --no-same-owner
+     cd protobuf-3.3.0/
+     ./configure
+     echo "Compiling protobuf"
