@@ -4,32 +4,31 @@ WORKDIR /root
 #Bug installing dependencies
 #RUN touch /etc/init.d/systemd-logind
 #
-RUN apt-get update && apt-get -y install wget vim
-RUN apt-get install -y git cmake  build-essential
+RUN apt-get update && apt-get -y install wget vim cmake build-essential sudo git ctags
 
-RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git
+#apt-utils
 
-RUN apt-get install -y libxml2-dev libxslt1-dev openssl libconfig-dev libssl-dev libopengm-dev nettle-dev
+#RUN apt-get install -y libxml2-dev libxslt1-dev openssl libconfig-dev libssl-dev libopengm-dev nettle-dev ctags
 
-RUN apt-get install -y xmp libatlas-base-dev libyaml-dev ctags
+#RUN apt-get install -y xmp libatlas-base-dev libyaml-dev ctags
 
-#WORKDIR /tmp
-#RUN df -lh
-#RUN wget www.freediameter.net/hg/freeDiameter/archive/1.3.2.tar.gz -O - | tar xzf -
-#WORKDIR ./freeDiameter-1.3.2
-#RUN apt-get -y install cmake make gcc g++ bison flex libsctp-dev libgnutls-dev libgcrypt-dev libidn11-dev ssl-cert debhelper fakeroot libpq-dev libmysqlclient-dev libxml2-dev swig python-dev
-
+RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git --branch develop-nb-iot
 WORKDIR ./openairinterface5g
 
-RUN apt-get install -y sudo apt-utils
+#ADD build_helper.patch ./
+#RUN git apply build_helper.patch
+#
 
-ADD build_helper.patch ./
-RUN git apply build_helper.patch
+#for build_ue
+#RUN apt-get install libboost-all-dev 
 
 SHELL ["/bin/bash", "-c"]
 RUN source ./oaienv && ./maketags
 RUN source ./oaienv && ./cmake_targets/build_oai -I
 
+#RUN apt-get update
+ENV DEBIAN_FRONTEND=noninteractive
+RUN source ./oaienv &&  ./cmake_targets/build_oai --install-optional-packages
 RUN source ./oaienv && ./cmake_targets/build_oai --phy_simulators
 
 #RUN echo source $(pwd)/oaienv >> ~/.bashrc

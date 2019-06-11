@@ -1,1 +1,1 @@
-docker build -t xvan/openair:v1 -f image/Dockerfile .
+docker build -t xvan/openair:v1c -f image/Dockerfile .
